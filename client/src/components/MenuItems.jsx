@@ -2,10 +2,12 @@ import React from "react";
 import Line from "./Line";
 
 const MenuItems = ({ type, menu }) => {
+  if (!menu) return null;
+
   return (
     <div className="mt-10">
-      {type === "Snacks" ? (
-        // Snacks Menu Layout
+      {type === "snacks" ? (
+        // Snacks Menu
         menu.map((category, index) => (
           <div key={index} className="mb-10 last:mb-8">
             {/* Category Header */}
@@ -19,15 +21,12 @@ const MenuItems = ({ type, menu }) => {
             {/* Menu Items Grid */}
             <div className="space-y-4 max-w-2xl mx-auto">
               {category.items.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between group"
-                >
+                <div key={idx} className="flex items-center justify-between">
                   <div className="flex-1 flex items-center">
                     <span className="text-2xl font-[Cormorant_Garamond] text-[#2B2B29]">
                       {item.name}
                     </span>
-                    <div className="flex-1 mx-4 border-b-2 border-dotted border-[#2B2B29] group-hover:border-[#2B2B29]/80 transition-colors"></div>
+                    <div className="flex-1 mx-4 border-b-2 border-dotted border-[#2B2B29]"></div>
                   </div>
                   <span className="text-2xl font-[Cormorant_Garamond] text-[#2B2B29]">
                     {item.price}
@@ -36,23 +35,24 @@ const MenuItems = ({ type, menu }) => {
               ))}
             </div>
 
-            {/* Container for the line to match max-w-2xl */}
+            {/* Line */}
             <div className="max-w-2xl mx-auto">
               <Line className="mt-10 w-full" />
             </div>
           </div>
         ))
       ) : (
-        // Breakfast, Lunch, Dinner Menu Layout
+        // Breakfast, Lunch, Dinner
         <div className="max-w-2xl mx-auto">
           <div className="space-y-6 text-center">
-            {menu.map((item, index) => (
-              <div key={index} className="relative group">
-                <p className="text-2xl font-[Cormorant_Garamond] text-[#2B2B29] py-1 px-4 transition-colors hover:text-[#2B2B29]/80">
-                  {item}
-                </p>
-              </div>
-            ))}
+            {Array.isArray(menu) &&
+              menu.map((item, index) => (
+                <div key={index}>
+                  <p className="text-2xl font-[Cormorant_Garamond] text-[#2B2B29] py-1 px-4">
+                    {item}
+                  </p>
+                </div>
+              ))}
           </div>
 
           <Line className="mt-10 w-full" />
