@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MenuPage from "./pages/MenuPage";
 import MessLogin from "./pages/MessLogin";
 import MessDashboard from "./pages/MessDashboard";
+import ProtectedRoute from "./components/ProtectedRoute"; // Import Protected Route
 import "./App.css";
 
 function App() {
@@ -11,7 +12,11 @@ function App() {
       <Routes>
         <Route path="/" element={<MenuPage />} />
         <Route path="/mess/login" element={<MessLogin />} />
-        <Route path="/mess/dashboard" element={<MessDashboard />} />
+
+        {/* Protected Route for MessDashboard */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/mess/dashboard" element={<MessDashboard />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
