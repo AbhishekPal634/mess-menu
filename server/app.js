@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const connectDB = require("./db");
 const menuRoutes = require("./routes/menuRoutes");
 const errorHandler = require("./middleware/errorHandler");
 require("dotenv").config();
@@ -13,6 +14,8 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(morgan("dev"));
+
+connectDB();
 
 // Routes
 app.use("/api/menu", menuRoutes);
