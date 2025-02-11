@@ -14,7 +14,7 @@ const MessLogin = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
       try {
-        const decoded = jwt_decode(token);
+        const decoded = jwtDecode(token);
         if (decoded.exp * 1000 > Date.now()) {
           navigate("/mess/dashboard");
           return;
@@ -22,6 +22,7 @@ const MessLogin = () => {
         // Clean up invalid token
         localStorage.removeItem("authToken");
       } catch (error) {
+        console.error("Token validation error:", error);
         localStorage.removeItem("authToken");
       }
     }
@@ -33,6 +34,22 @@ const MessLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // First check if there's a valid token
+    const existingToken = localStorage.getItem("authToken");
+    if (existingToken) {
+      try {
+        const decoded = jwtDecode(existingToken);
+        if (decoded.exp * 1000 > Date.now()) {
+          navigate("/mess/dashboard");
+          return;
+        }
+      } catch (error) {
+        localStorage.removeItem("authToken");
+      }
+    }
+
+    // Proceed with login if no valid token exists
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/login`,
@@ -40,26 +57,18 @@ const MessLogin = () => {
         { withCredentials: true }
       );
 
-      // console.log("Login response:", response.data); // Debug log
-
       if (response.data.accessToken) {
-        // Verify token structure before saving
         try {
           const decoded = jwtDecode(response.data.accessToken);
-          // console.log("Decoded login token:", decoded); // Debug log
-
           localStorage.setItem("authToken", response.data.accessToken);
           navigate("/mess/dashboard");
         } catch (error) {
-          // console.error("Token verification error:", error); // Debug log
           setError("Invalid token received from server");
         }
       } else {
-        // console.error("No access token in response"); // Debug log
         setError("Invalid response from server");
       }
     } catch (err) {
-      // console.error("Login error:", err); // Debug log
       setError("Invalid credentials. Please try again.");
     }
   };

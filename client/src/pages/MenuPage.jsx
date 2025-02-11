@@ -90,11 +90,7 @@ const MenuPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#ECDFCB]">
-        <PacmanLoader
-          color="#f9ce8f" // Slightly lighter color
-          size={50} // Increased size
-          className="my-4" // Add margin if needed
-        />
+        <PacmanLoader color="#f9ce8f" size={50} className="my-4" />
       </div>
     );
   }

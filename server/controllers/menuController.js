@@ -57,4 +57,49 @@ const getNavigation = (currentType) => {
   return { prev, next };
 };
 
-module.exports = { getMenu };
+const updateMenu = async (req, res) => {
+  try {
+    const { type } = req.params;
+    const { menu: items, date } = req.body;
+    let menu = await Menu.findOne({ type });
+
+    if (!menu) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Menu type not found" });
+    }
+
+    if (items) {
+      menu.items = items;
+    }
+    if (date) {
+      menu.date = date;
+    }
+
+    await menu.save();
+
+    const { prev, next } = getNavigation(type);
+
+    const updatedMenu = {
+      type,
+      menu: menu.items,
+      date: menu.date,
+      prev,
+      next,
+    };
+
+    // Update cache with new data
+    cache.set(getCacheKey(type), updatedMenu, CACHE_DURATION);
+
+    res.json({
+      success: true,
+      message: "Menu updated successfully",
+      menu: updatedMenu,
+    });
+  } catch (error) {
+    console.error("Update Menu Error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+module.exports = { getMenu, updateMenu };

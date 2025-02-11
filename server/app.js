@@ -11,21 +11,17 @@ require("dotenv").config();
 
 const app = express();
 
-// Connect MongoDB
 connectDB();
 
-// Middleware
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-// Routes
 app.use("/api/menu", menuRoutes);
 app.use("/api/auth", authRoutes);
 
-// Error handling middleware
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

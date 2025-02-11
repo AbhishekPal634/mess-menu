@@ -1,7 +1,7 @@
 const NodeCache = require("node-cache");
 const cache = new NodeCache();
 
-const CACHE_DURATION = process.env.CACHE_DURATION_HOURS * 60 * 60; // Convert hours to seconds
+const CACHE_DURATION = process.env.CACHE_DURATION_MINUTES * 60;
 
 const getCacheKey = (type) =>
   `menu_${type}_${new Date().toISOString().split("T")[0]}`;
