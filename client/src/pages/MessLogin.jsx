@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import Line from "../components/Line";
 import axios from "axios";
 
@@ -7,6 +8,24 @@ const MessLogin = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is already logged in with a valid token
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const decoded = jwt_decode(token);
+        if (decoded.exp * 1000 > Date.now()) {
+          navigate("/mess/dashboard");
+          return;
+        }
+        // Clean up invalid token
+        localStorage.removeItem("authToken");
+      } catch (error) {
+        localStorage.removeItem("authToken");
+      }
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,16 +35,31 @@ const MessLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        `${import.meta.env.VITE_API_URL}/auth/login`,
         formData,
         { withCredentials: true }
       );
 
+      // console.log("Login response:", response.data); // Debug log
+
       if (response.data.accessToken) {
-        localStorage.setItem("authToken", response.data.accessToken);
-        navigate("/mess/dashboard");
+        // Verify token structure before saving
+        try {
+          const decoded = jwtDecode(response.data.accessToken);
+          // console.log("Decoded login token:", decoded); // Debug log
+
+          localStorage.setItem("authToken", response.data.accessToken);
+          navigate("/mess/dashboard");
+        } catch (error) {
+          // console.error("Token verification error:", error); // Debug log
+          setError("Invalid token received from server");
+        }
+      } else {
+        // console.error("No access token in response"); // Debug log
+        setError("Invalid response from server");
       }
     } catch (err) {
+      // console.error("Login error:", err); // Debug log
       setError("Invalid credentials. Please try again.");
     }
   };

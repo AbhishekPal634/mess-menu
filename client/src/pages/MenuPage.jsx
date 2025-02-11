@@ -3,6 +3,7 @@ import { getMenu, getDefaultMenuType } from "../services/api";
 import MenuItems from "../components/MenuItems";
 import Line from "../components/Line";
 import { FaCaretRight, FaCaretLeft } from "react-icons/fa";
+import PacmanLoader from "react-spinners/PacmanLoader";
 
 const MenuPage = () => {
   const [loading, setLoading] = useState(true);
@@ -89,7 +90,11 @@ const MenuPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#ECDFCB]">
-        <p className="text-2xl font-[Cormorant_Garamond]">Loading...</p>
+        <PacmanLoader
+          color="#f9ce8f" // Slightly lighter color
+          size={50} // Increased size
+          className="my-4" // Add margin if needed
+        />
       </div>
     );
   }

@@ -12,7 +12,7 @@ const MenuItems = ({ type, menu }) => {
           <div key={index} className="mb-10 last:mb-8">
             {/* Category Header */}
             <div className="relative text-center mb-8">
-              <h2 className="text-6xl font-[Imperial_Script] text-[#2B2B29] relative z-10 inline-block px-6">
+              <h2 className="text-4xl font-[Cormorant_Garamond] text-[#2B2B29] relative z-10 inline-block px-6">
                 {category.categoryName}
               </h2>
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-[#ECDFCB]/50 rounded-full -z-10"></div>
