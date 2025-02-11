@@ -6,7 +6,6 @@ import { getMenu } from "../services/api.js";
 import axios from "axios";
 import PacmanLoader from "react-spinners/PacmanLoader";
 import MenuTypeSelector from "../components/MenuTypeSelector";
-import DateSelector from "../components/DateSelector";
 import RegularMenu from "../components/RegularMenu";
 import SnacksMenu from "../components/SnacksMenu";
 
@@ -85,7 +84,7 @@ const MessDashboard = () => {
 
   useEffect(() => {
     fetchMenu(selectedType);
-  }, [selectedType, snacksMenu.date, regularMenu.date]);
+  }, [selectedType]); 
 
   const fetchMenu = async (type) => {
     try {
@@ -281,6 +280,41 @@ const MessDashboard = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+// Update DateSelector component to handle date changes without triggering a fetch
+const DateSelector = ({
+  selectedType,
+  snacksMenu,
+  regularMenu,
+  setSnacksMenu,
+  setRegularMenu,
+}) => {
+  const handleDateChange = (e) => {
+    const dateOption = e.target.value;
+    if (selectedType === "snacks") {
+      setSnacksMenu((prev) => ({
+        ...prev,
+        date: dateOption,
+      }));
+    } else {
+      setRegularMenu((prev) => ({
+        ...prev,
+        date: dateOption,
+      }));
+    }
+  };
+
+  return (
+    <select
+      className="w-full md:w-auto border-2 border-[#2B2B29] bg-transparent p-2 rounded-md font-[Cormorant_Garamond] text-lg md:text-xl"
+      value={(selectedType === "snacks" ? snacksMenu : regularMenu).date}
+      onChange={handleDateChange}
+    >
+      <option value="Today">Today</option>
+      <option value="Tomorrow">Tomorrow</option>
+    </select>
   );
 };
 
