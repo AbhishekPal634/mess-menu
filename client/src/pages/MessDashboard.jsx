@@ -9,6 +9,14 @@ import MenuTypeSelector from "../components/MenuTypeSelector";
 import RegularMenu from "../components/RegularMenu";
 import SnacksMenu from "../components/SnacksMenu";
 
+// Add this utility function at the top of your component
+const capitalizeWords = (str) => {
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
 const MessDashboard = () => {
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState("breakfast");
@@ -84,7 +92,7 @@ const MessDashboard = () => {
 
   useEffect(() => {
     fetchMenu(selectedType);
-  }, [selectedType]); 
+  }, [selectedType]);
 
   const fetchMenu = async (type) => {
     try {
@@ -126,20 +134,34 @@ const MessDashboard = () => {
     }
   };
 
+  // Update handleSaveChanges function
   const handleSaveChanges = async () => {
     try {
       setIsSaving(true);
       setSaveError(null);
 
       const menuData = selectedType === "snacks" ? snacksMenu : regularMenu;
-      const updatedMenuData = {
+
+      // Capitalize menu items based on type
+      const capitalizedMenu = {
         ...menuData,
+        menu:
+          selectedType === "snacks"
+            ? menuData.menu.map((category) => ({
+                ...category,
+                categoryName: capitalizeWords(category.categoryName),
+                items: category.items.map((item) => ({
+                  ...item,
+                  name: capitalizeWords(item.name),
+                })),
+              }))
+            : menuData.menu.map((item) => capitalizeWords(item)),
         date: getFormattedDate(menuData.date || "Today"),
       };
 
       await axios.put(
         `${import.meta.env.VITE_API_URL}/menu/${selectedType}`,
-        updatedMenuData,
+        capitalizedMenu,
         {
           withCredentials: true,
           headers: {
