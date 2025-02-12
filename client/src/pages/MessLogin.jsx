@@ -140,7 +140,11 @@ const MessLogin = () => {
           <div className="pt-4">
             <button
               type="submit"
-              className="w-full bg-[#2B2B29] text-white py-2 px-4 text-xl hover:bg-[#2B2B29]/90"
+              className="w-full bg-[#2B2B29] text-white py-2 px-4 text-xl 
+                hover:bg-[#2B2B29]/90 transition-all duration-200
+                active:scale-[0.98] active:translate-y-[1px]
+                focus:outline-none focus:ring-2 focus:ring-[#2B2B29] focus:ring-offset-2 focus:ring-offset-[#F9F0E1]
+                disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Login
             </button>

@@ -40,7 +40,7 @@ const MenuPage = () => {
   const renderNavigation = () => {
     if (!menuData) return null;
 
-    // Special case: If menu type is "breakfast", align Lunch button to the right
+    // If menu type is breakfast, align Lunch button to the right
     if (menuData.type === "breakfast") {
       return (
         <div className="flex justify-end">
@@ -57,7 +57,7 @@ const MenuPage = () => {
       );
     }
 
-    // Default case for other menus (centered navigation with previous and next)
+    // Default case for other menus
     return (
       <div className="flex items-center justify-between text-lg">
         {menuData.prev && (

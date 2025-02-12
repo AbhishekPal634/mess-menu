@@ -9,7 +9,6 @@ import MenuTypeSelector from "../components/MenuTypeSelector";
 import RegularMenu from "../components/RegularMenu";
 import SnacksMenu from "../components/SnacksMenu";
 
-// Add this utility function at the top of your component
 const capitalizeWords = (str) => {
   return str
     .split(" ")
@@ -134,7 +133,6 @@ const MessDashboard = () => {
     }
   };
 
-  // Update handleSaveChanges function
   const handleSaveChanges = async () => {
     try {
       setIsSaving(true);
@@ -142,7 +140,6 @@ const MessDashboard = () => {
 
       const menuData = selectedType === "snacks" ? snacksMenu : regularMenu;
 
-      // Capitalize menu items based on type
       const capitalizedMenu = {
         ...menuData,
         menu:
@@ -228,7 +225,11 @@ const MessDashboard = () => {
       <div className="absolute top-4 right-4">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-2 px-4 py-2 bg-[#2B2B29] text-[#ECDFCB] rounded-md hover:bg-[#2B2B29]/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#2B2B29] text-[#ECDFCB] rounded-md 
+    hover:bg-[#2B2B29]/90 transition-all duration-200
+    active:scale-[0.98] active:translate-y-[1px]
+    focus:outline-none focus:ring-2 focus:ring-[#2B2B29] focus:ring-offset-2 focus:ring-offset-[#ECDFCB]
+    disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <FaSignOutAlt />
           <span className="font-[Cormorant_Garamond]">Logout</span>
@@ -305,7 +306,6 @@ const MessDashboard = () => {
   );
 };
 
-// Update DateSelector component to handle date changes without triggering a fetch
 const DateSelector = ({
   selectedType,
   snacksMenu,
