@@ -47,6 +47,16 @@ const MenuPage = () => {
   };
 
   const formatDate = (dateString) => {
+    //change begin
+    if (menuData?.type === "snacks") {
+      // For snacks, use current date
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, "0");
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const year = today.getFullYear();
+      return `${day}. ${month}. ${year}`;
+    }
+    //change end
     const [day, month, year] = dateString.split("-");
     return `${day}. ${month}. ${year}`;
   };

@@ -26,7 +26,7 @@ const MenuItems = ({ type, menu }) => {
                     <span className="text-2xl font-[Cormorant_Garamond] text-[#2B2B29]">
                       {item.name}
                     </span>
-                    <div className="flex-1 mx-4 border-b-2 border-dotted border-[#2B2B29]"></div>
+                    {/* <div className="flex-1 mx-4 border-b-2 border-dotted border-[#2B2B29]"></div> */}
                   </div>
                   <span className="text-2xl font-[Cormorant_Garamond] text-[#2B2B29]">
                     {item.price}
