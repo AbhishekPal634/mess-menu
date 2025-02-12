@@ -86,7 +86,7 @@ const MessLogin = () => {
 
         {/* Title */}
         <div className="text-center mb-8 mt-4">
-          <h1 className="text-5xl font-[Imperial_Script] text-[#2B2B29]">
+          <h1 className="text-4xl font-[Kaisei_Decol] text-[#2B2B29]">
             Mess Login
           </h1>
           <Line className="mt-4 w-[90%] mx-auto" />
@@ -95,7 +95,10 @@ const MessLogin = () => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6 px-4 sm:px-6 mt-8">
           <div className="space-y-2">
-            <label htmlFor="username" className="block text-xl text-[#2B2B29]">
+            <label
+              htmlFor="username"
+              className="block text-2xl text-[#2B2B29] font-[Cormorant_Garamond]"
+            >
               Username
             </label>
             <input
@@ -104,14 +107,17 @@ const MessLogin = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="w-full px-4 py-2 border-2 border-[#2B2B29]/30 focus:border-[#2B2B29] outline-none text-lg"
-              placeholder="Enter your username"
+              className="w-full px-4 py-2 border-2 border-[#2B2B29]/30 focus:border-[#2B2B29] outline-none text-xl font-[Cormorant_Garamond]"
+              placeholder="Enter your Username"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="password" className="block text-xl text-[#2B2B29]">
+            <label
+              htmlFor="password"
+              className="block text-2xl text-[#2B2B29] font-[Cormorant_Garamond]"
+            >
               Password
             </label>
             <div className="relative">
@@ -121,7 +127,7 @@ const MessLogin = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border-2 border-[#2B2B29]/30 focus:border-[#2B2B29] outline-none text-lg pr-12"
+                className="w-full px-4 py-2 border-2 border-[#2B2B29]/30 focus:border-[#2B2B29] outline-none text-xl pr-12 font-[Cormorant_Garamond]"
                 placeholder="Enter your password"
                 required
               />
@@ -140,11 +146,11 @@ const MessLogin = () => {
           <div className="pt-4">
             <button
               type="submit"
-              className="w-full bg-[#2B2B29] text-white py-2 px-4 text-xl 
+              className="w-full bg-[#2B2B29] text-white py-2 px-4 text-2xl 
                 hover:bg-[#2B2B29]/90 transition-all duration-200
                 active:scale-[0.98] active:translate-y-[1px]
                 focus:outline-none focus:ring-2 focus:ring-[#2B2B29] focus:ring-offset-2 focus:ring-offset-[#F9F0E1]
-                disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled:opacity-50 disabled:cursor-not-allowed font-[Cormorant_Garamond]"
             >
               Login
             </button>
