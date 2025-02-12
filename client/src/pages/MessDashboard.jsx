@@ -237,7 +237,7 @@ const MessDashboard = () => {
       </div>
 
       <div className="mt-16 md:mt-20 flex flex-col items-center justify-center">
-        <h1 className="text-6xl md:text-[88px] font-[Kaisei_Decol] leading-[1] text-[#2B2B29]">
+        <h1 className="text-4xl md:text-6xl font-[Kaisei_Decol] leading-[1] text-[#2B2B29]">
           Mess Dashboard
         </h1>
         <h3 className="text-xl md:text-2xl font-[Cormorant_Garamond] font-extralight text-[#2B2B29] mt-2">
