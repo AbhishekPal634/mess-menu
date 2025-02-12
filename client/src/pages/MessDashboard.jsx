@@ -229,7 +229,7 @@ const MessDashboard = () => {
     hover:bg-[#2B2B29]/90 transition-all duration-200
     active:scale-[0.98] active:translate-y-[1px]
     focus:outline-none focus:ring-2 focus:ring-[#2B2B29] focus:ring-offset-2 focus:ring-offset-[#ECDFCB]
-    disabled:opacity-50 disabled:cursor-not-allowed"
+    disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           <FaSignOutAlt />
           <span className="font-[Cormorant_Garamond]">Logout</span>
