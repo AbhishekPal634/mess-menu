@@ -35,20 +35,32 @@ const clearExpiredCache = () => {
   }
 };
 
-export const getMenu = async (type) => {
+export const getAllMenus = async () => {
   try {
     clearExpiredCache();
 
-    const cacheKey = getCacheKey(type);
+    const cacheKey = `menus_all_${new Date().toLocaleDateString()}`;
     const cachedData = menuCache.get(cacheKey);
 
     if (cachedData) {
       return cachedData;
     }
 
-    const response = await api.get(`/menu/${type}`);
+    const response = await api.get("/menu/all");
     menuCache.set(cacheKey, response.data);
     return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || "Failed to fetch menus");
+  }
+};
+
+export const getMenu = async (type) => {
+  try {
+    clearExpiredCache();
+
+    // Try to get from all-menus cache first
+    const allMenus = await getAllMenus();
+    return allMenus.find((menu) => menu.type === type);
   } catch (error) {
     throw new Error(error.response?.data?.error || "Failed to fetch menu");
   }

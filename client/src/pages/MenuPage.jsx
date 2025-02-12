@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getMenu, getDefaultMenuType } from "../services/api";
+import { getAllMenus, getDefaultMenuType } from "../services/api";
 import MenuItems from "../components/MenuItems";
 import Line from "../components/Line";
 import { FaCaretRight, FaCaretLeft } from "react-icons/fa";
@@ -9,18 +9,25 @@ const MenuPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [menuData, setMenuData] = useState(null);
+  const [allMenus, setAllMenus] = useState(null);
 
   useEffect(() => {
     const defaultType = getDefaultMenuType();
-    fetchMenu(defaultType);
+    fetchAllMenus(defaultType);
   }, []);
 
-  const fetchMenu = async (type) => {
+  const fetchAllMenus = async (initialType) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await getMenu(type);
-      setMenuData(data);
+      const menus = await getAllMenus();
+      setAllMenus(menus);
+      const initialMenu = menus.find((menu) => menu.type === initialType);
+      if (initialMenu) {
+        setMenuData(initialMenu);
+      } else {
+        setError("Default menu type not found");
+      }
     } catch (error) {
       setError(error.message);
     } finally {
@@ -29,7 +36,14 @@ const MenuPage = () => {
   };
 
   const handleNavigation = (type) => {
-    fetchMenu(type);
+    if (allMenus) {
+      const nextMenu = allMenus.find((menu) => menu.type === type);
+      if (nextMenu) {
+        setMenuData(nextMenu);
+      } else {
+        setError(`Menu type ${type} not found`);
+      }
+    }
   };
 
   const formatDate = (dateString) => {
@@ -98,14 +112,22 @@ const MenuPage = () => {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#ECDFCB]">
-        <p className="text-2xl font-[Cormorant_Garamond] text-red-600">
-          {error}
-        </p>
+        <div className="bg-[#F9F0E1] p-8 rounded-lg shadow-lg">
+          <p className="text-2xl font-[Cormorant_Garamond] text-red-600 text-center">
+            {error}
+          </p>
+          <button
+            onClick={() => fetchAllMenus(getDefaultMenuType())}
+            className="mt-4 px-6 py-2 bg-[#2B2B29]/10 rounded-md hover:bg-[#2B2B29]/20 transition-colors text-[#2B2B29] font-[Cormorant_Garamond]"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
 
-  if (!menuData) return null;
+  if (!menuData || !allMenus) return null;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#ECDFCB] p-8">
