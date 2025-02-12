@@ -10,7 +10,6 @@ const MenuPage = () => {
   const [error, setError] = useState(null);
   const [menuData, setMenuData] = useState(null);
   const [allMenus, setAllMenus] = useState(null);
-  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const defaultType = getDefaultMenuType();
@@ -172,10 +171,10 @@ const MenuPage = () => {
           </div>
         </div>
 
-        {/* Copyright text - now in a footer section */}
+        {/* Credits */}
         <footer className="mt-auto pt-8 pb-2">
           <p className="text-sm font-[Cormorant_Garamond] text-[#2B2B29]/70 text-center">
-            Designed & Developed by Abhishek Pal | © {currentYear}
+            Designed & Developed by Abhishek Pal
           </p>
         </footer>
       </div>
