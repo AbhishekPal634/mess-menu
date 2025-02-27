@@ -18,17 +18,17 @@ const AmbioraPreloader = ({ isLoading, onFinishedLoading }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Show skip button after 4 seconds
+    // Show skip button after 2 seconds (was 4)
     const skipButtonTimer = setTimeout(() => {
       setShowSkipButton(true);
-    }, 4000);
+    }, 1000);
 
-    // Auto skip after 10 seconds
+    // Auto skip after 5 seconds (was 10)
     const autoSkipTimer = setTimeout(() => {
       handleSkip();
-    }, 10000);
+    }, 5000);
 
-    // Animate progress bar
+    // Animate progress bar faster (was 30ms)
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -36,9 +36,9 @@ const AmbioraPreloader = ({ isLoading, onFinishedLoading }) => {
           setShowSkipButton(true);
           return 100;
         }
-        return prev + 1;
+        return prev + 2; // Increment by 2 instead of 1
       });
-    }, 30);
+    }, 15);
 
     return () => {
       clearTimeout(skipButtonTimer);
@@ -56,17 +56,17 @@ const AmbioraPreloader = ({ isLoading, onFinishedLoading }) => {
     window.open("https://www.ambioratech.com/events", "_blank");
   };
 
-  const particles = Array.from({ length: 70 }).map((_, i) => (
+  const particles = Array.from({ length: 50 }).map((_, i) => (
     <div
       key={i}
-      className="absolute bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full opacity-70"
+      className="absolute bg-white rounded-full"
       style={{
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        width: `${Math.random() * 6 + 1}px`,
-        height: `${Math.random() * 6 + 1}px`,
-        animation: `float ${Math.random() * 10 + 5}s linear infinite`,
-        animationDelay: `${Math.random() * 5}s`,
+        width: Math.random() * 3 + "px",
+        height: Math.random() * 3 + "px",
+        top: Math.random() * 100 + "%",
+        left: Math.random() * 100 + "%",
+        opacity: Math.random() * 0.5 + 0.3,
+        animationDuration: Math.random() * 10 + 5 + "s",
       }}
     />
   ));
@@ -156,13 +156,19 @@ const AmbioraPreloader = ({ isLoading, onFinishedLoading }) => {
                   alt="Ambiora Logo"
                   className="w-48 h-48 object-contain mb-4 drop-shadow-lg"
                 />
-                <h1
+                {/* <h1
                   className="glitch text-3xl text-white font-tech tracking-wider"
                   data-text="AMBIORA'25"
                 >
                   <span aria-hidden="true">AMBIORA'25</span>
                   AMBIORA'25
                   <span aria-hidden="true">AMBIORA'25</span>
+                </h1> */}
+                <h1
+                  className="loader-text glitch text-3xl md:text-5xl lg:text-6xl text-white font-tech"
+                  data-text="AMBIORA'25"
+                >
+                  AMBIORA'25
                 </h1>
               </div>
 
@@ -191,41 +197,10 @@ const AmbioraPreloader = ({ isLoading, onFinishedLoading }) => {
                 className="text-gray-300 text-center mb-8 font-tech text-sm tracking-wider"
               ></motion.p>
 
-              {/* Animated Icons */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                className="flex justify-center space-x-10 mb-10"
-              >
-                <motion.div
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
-                  className="relative"
-                >
-                  <div className="absolute inset-0 bg-blue-500 rounded-full blur-md opacity-40"></div>
-                  <FaLaptopCode className="text-4xl text-blue-400 relative z-10" />
-                </motion.div>
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                  className="relative"
-                >
-                  <div className="absolute inset-0 bg-purple-500 rounded-full blur-md opacity-40"></div>
-                  <FaRobot className="text-4xl text-purple-400 relative z-10" />
-                </motion.div>
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                  className="relative"
-                >
-                  <div className="absolute inset-0 bg-green-500 rounded-full blur-md opacity-40"></div>
-                  <FaMicrochip className="text-4xl text-green-400 relative z-10" />
-                </motion.div>
-              </motion.div>
-
               {/* Progress Bar */}
-              <div className="w-full max-w-md mb-10">
+              <div className="w-full max-w-md mb-10 mt-4">
+                {" "}
+                {/* Added mt-4 */}
                 <div className="h-2 w-full bg-gray-800 rounded-full overflow-hidden relative backdrop-blur-sm border border-gray-700/30">
                   <motion.div
                     className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full"
