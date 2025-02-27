@@ -79,6 +79,22 @@ const AmbioraPreloader = ({ isLoading, onFinishedLoading }) => {
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black z-50 overflow-y-auto" // Changed from overflow-hidden and added overflow-y-auto
         >
+          {/* Skip Button */}
+          {showSkipButton && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              onClick={handleSkip}
+              className="fixed top-4 right-4 z-50 bg-gray-900/50 text-white px-4 py-2 rounded-md 
+                font-tech text-sm tracking-wider flex items-center gap-2 
+                hover:bg-gray-900/70 transition-colors duration-200
+                backdrop-blur-sm border border-gray-700/30"
+            >
+              <span>SKIP</span>
+              <FaTimes className="text-xs" />
+            </motion.button>
+          )}
+
           {/* Add a min-height wrapper to ensure proper scrolling */}
           <div className="min-h-screen flex items-center justify-center relative py-8">
             {" "}
