@@ -5,7 +5,7 @@ import Line from "../components/Line";
 import { FaCaretRight, FaCaretLeft } from "react-icons/fa";
 import PacmanLoader from "react-spinners/PacmanLoader";
 import SportsBackground from "../components/SportsBackground"; 
-import SplashScreen from "../components/SplashScreen"; // 1. Import SplashScreen
+import SplashScreen from "../components/SplashScreen"; 
 
 const MenuPage = () => {
   const [loading, setLoading] = useState(true);
@@ -13,7 +13,6 @@ const MenuPage = () => {
   const [menuData, setMenuData] = useState(null);
   const [allMenus, setAllMenus] = useState(null);
   
-  // 2. State to control Splash Screen visibility
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
@@ -110,74 +109,85 @@ const MenuPage = () => {
 
   return (
     <>
-      {/* 3. Render Splash Screen ONLY if 'showSplash' is true */}
       {showSplash && (
         <SplashScreen onComplete={() => setShowSplash(false)} />
       )}
 
-      <div className="min-h-screen flex items-center justify-center bg-[#ECDFCB] p-8">
-        <div className="bg-[#F9F0E1] max-w-3xl w-full min-h-[calc(100vh-4rem)] p-4 shadow-lg relative overflow-hidden flex flex-col">
+      <div className="min-h-screen flex items-center justify-center bg-[#ECDFCB] p-4 md:p-8">
+        <div className="bg-[#F9F0E1] max-w-3xl w-full min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-4rem)] p-4 shadow-lg relative overflow-hidden flex flex-col">
           
-          {/* === REUSABLE SPORTS COMPONENT === */}
           <SportsBackground />
 
           {/* Decorative corners */}
-          <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-[#2B2B29]/30 z-10"></div>
-          <div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-[#2B2B29]/30 z-10"></div>
-          <div className="absolute bottom-0 left-0 w-16 h-16 border-l-2 border-b-2 border-[#2B2B29]/30 z-10"></div>
-          <div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-[#2B2B29]/30 z-10"></div>
+          <div className="absolute top-0 left-0 w-12 h-12 md:w-16 md:h-16 border-l-2 border-t-2 border-[#2B2B29]/30 z-10"></div>
+          <div className="absolute top-0 right-0 w-12 h-12 md:w-16 md:h-16 border-r-2 border-t-2 border-[#2B2B29]/30 z-10"></div>
+          <div className="absolute bottom-0 left-0 w-12 h-12 md:w-16 md:h-16 border-l-2 border-b-2 border-[#2B2B29]/30 z-10"></div>
+          <div className="absolute bottom-0 right-0 w-12 h-12 md:w-16 md:h-16 border-r-2 border-b-2 border-[#2B2B29]/30 z-10"></div>
 
           <div className="flex-1 z-10 relative">
             
             {/* === HEADER START === */}
-            <header className="w-full flex flex-col items-center justify-center pt-10 pb-6 relative">
+            <header className="w-full flex flex-col items-center justify-center pt-10 md:pt-14 pb-8 relative">
               
               <a 
                 href="https://flavium-official.vercel.app/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                // 1. Interaction: Scales down on tap for "Real App" feel
+                className="group flex flex-col items-center cursor-pointer active:scale-95 transition-transform duration-200"
               >
+                {/* 2. Title: Center fixed with pl-[0.15em] */}
                 <h1 
-                  className="font-['Cormorant_Garamond'] text-6xl md:text-8xl font-bold tracking-[0.2em] uppercase text-[#2B2B29] leading-none text-center transition-all duration-300 group-hover:tracking-[0.22em]" 
+                  className="font-['Cormorant_Garamond'] text-6xl md:text-[7rem] font-bold tracking-[0.15em] pl-[0.15em] uppercase text-[#2B2B29] leading-none text-center drop-shadow-sm" 
                   style={{ textShadow: '2px 2px 4px rgba(43, 43, 41, 0.1)' }}
                 >
                   Flavium
                 </h1>
                 
-                {/* 4. PERMANENT TEXT: Removed opacity-0 and hover classes */}
-                <span className="mt-2 text-sm font-[Cormorant_Garamond] text-[#2B2B29]/60 tracking-widest uppercase opacity-100">
-                  Visit Official Site of Flavium
-                </span>
+                {/* 3. Button: MONOCHROME CHIC (Matches your Beige/Charcoal theme)
+                   - Border: Charcoal #2B2B29
+                   - Text: Charcoal
+                   - Hover/Active: Background turns Charcoal, Text turns Beige (Inverted)
+                */}
+                <div className="mt-5 px-6 py-2 rounded-full border border-[#2B2B29] bg-transparent 
+                              transition-all duration-300 group-active:bg-[#2B2B29] group-active:text-[#F9F0E1] group-hover:bg-[#2B2B29] group-hover:text-[#F9F0E1]">
+                  <span className="text-[10px] md:text-xs font-[Cormorant_Garamond] font-bold tracking-[0.2em] uppercase flex items-center gap-2">
+                    Visit Official Site <span className="opacity-70">↗</span>
+                  </span>
+                </div>
               </a>
 
-              <div className="flex items-center justify-center w-full max-w-md mt-3 gap-4">
-                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#2B2B29]/40 to-[#2B2B29]/40"></div>
-                <span className="font-['Cormorant_Garamond'] text-[10px] md:text-xs tracking-[0.4em] uppercase text-[#2B2B29]/70 font-bold whitespace-nowrap">Mess Menu</span>
-                <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-[#2B2B29]/40 to-[#2B2B29]/40"></div>
+              {/* Decorative Lines */}
+              <div className="flex items-center justify-center w-full max-w-[200px] md:max-w-md mt-6 gap-4 opacity-60">
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#2B2B29] to-[#2B2B29]"></div>
+                <span className="font-['Cormorant_Garamond'] text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#2B2B29] font-bold whitespace-nowrap">
+                    Mess Menu
+                </span>
+                <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-[#2B2B29] to-[#2B2B29]"></div>
               </div>
+
             </header>
             {/* === HEADER END === */}
 
             {renderNavigation()}
 
             <div className="mt-6 flex flex-col items-center justify-center">
-              <h1 className="text-[52px] font-[Kaisei_Decol] leading-[1] text-[#2B2B29] capitalize">{menuData.type}</h1>
-              <h3 className="text-2xl font-[Cormorant_Garamond] font-extralight text-[#2B2B29] mt-2">{formatDate(menuData.date)}</h3>
+              <h1 className="text-4xl md:text-[52px] font-[Kaisei_Decol] leading-[1] text-[#2B2B29] capitalize text-center">{menuData.type}</h1>
+              <h3 className="text-xl md:text-2xl font-[Cormorant_Garamond] font-extralight text-[#2B2B29] mt-2">{formatDate(menuData.date)}</h3>
             </div>
 
             <Line className="mt-4 w-[90%]" />
-            <div className="px-4"><MenuItems type={menuData.type} menu={menuData.menu} /></div>
+            <div className="px-2 md:px-4"><MenuItems type={menuData.type} menu={menuData.menu} /></div>
 
             <div className="mt-10 mb-2 text-center">
-              <div className="inline-block border-t-2 border-b-2 border-[#2B2B29]/30 py-4">
-                <p className="font-[Cormorant_Garamond] text-xl text-[#2B2B29]">Take all you can eat</p>
-                <p className="font-[Cormorant_Garamond] text-xl text-[#2B2B29] mt-2">Eat all that you take</p>
+              <div className="inline-block border-t-2 border-b-2 border-[#2B2B29]/30 py-4 px-4">
+                <p className="font-[Cormorant_Garamond] text-lg md:text-xl text-[#2B2B29]">Take all you can eat</p>
+                <p className="font-[Cormorant_Garamond] text-lg md:text-xl text-[#2B2B29] mt-2">Eat all that you take</p>
               </div>
             </div>
           </div>
           <footer className="mt-auto pt-8 pb-2 z-10 relative">
-            <p className="text-sm font-[Cormorant_Garamond] text-[#2B2B29]/70 text-center">Designed by Chinmay Soni<br></br>Developed by Abhishek Pal</p>
+            <p className="text-xs md:text-sm font-[Cormorant_Garamond] text-[#2B2B29]/70 text-center">Designed by Chinmay Soni<br></br>Developed by Abhishek Pal</p>
           </footer>
         </div>
       </div>
