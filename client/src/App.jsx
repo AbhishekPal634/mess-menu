@@ -1,4 +1,3 @@
-import { useState } from 'react'; 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import MenuPage from "./pages/MenuPage";
@@ -6,24 +5,27 @@ import MessLogin from "./pages/MessLogin";
 import MessDashboard from "./pages/MessDashboard";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-import SplashScreen from "./components/SplashScreen"; 
+
+// FIX: Removed SplashScreen import. It is now handled inside MenuPage.jsx
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  // FIX: Removed global 'isLoading' state. 
+  // We don't want the entire app to wait, only the MenuPage.
 
   return (
     <>
-      {/* 1. The Splash Screen (Double Doors) sits on top (z-index 9999) */}
-      {isLoading && <SplashScreen onComplete={() => setIsLoading(false)} />}
+      {/* FIX: Removed global <SplashScreen /> component here. 
+          This ensures it DOES NOT appear on the Login page. 
+      */}
 
-      {/* 2. CRITICAL FIX: Removed 'hidden' class. 
-          The app must be rendered BEHIND the doors so it is visible 
-          the moment the animation starts. */}
       <div>
         <BrowserRouter>
           <Routes>
             {/* Public Routes */}
+            {/* MenuPage will now trigger its own internal SplashScreen when visited */}
             <Route path="/" element={<MenuPage />} />
+            
+            {/* Login Page will now load instantly without the splash screen */}
             <Route path="/mess/login" element={<MessLogin />} />
 
             {/* Protected Route for MessDashboard */}
