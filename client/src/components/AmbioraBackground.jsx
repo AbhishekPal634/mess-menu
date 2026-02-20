@@ -1,13 +1,38 @@
 // src/components/AmbioraBackground.jsx
-import React from 'react';
+import React, { useMemo } from 'react';
+
+import imgCineTech from '../assets/cine_tech.png';
+import imgCodeVyuh from '../assets/code_vyuh.png';
+import imgDeepFake from '../assets/deep_fake_hisence.png'; 
+import imgDrone from '../assets/drone_o_mania.png';
+import imgPitchApp from '../assets/pitch_your_own_app.png'; 
+import imgRobo from '../assets/robo_workshop.png';
+import imgTower from '../assets/tower_of_stability.png';
+import imgTreasure from '../assets/treasure_hunt.png';
 
 const AmbioraBackground = () => {
+  const floatingCards = useMemo(() => {
+    return [
+      { id: 1, src: imgCodeVyuh, top: '2%', left: '2%', rotation: -12 },
+      { id: 2, src: imgTreasure, top: '8%', left: '86%', rotation: 8 },
+      { id: 3, src: imgRobo, top: '32%', left: '1%', rotation: 15 },
+      { id: 4, src: imgDeepFake, top: '38%', left: '89%', rotation: -10 }, 
+      { id: 5, src: imgPitchApp, top: '62%', left: '3%', rotation: -8 },
+      { id: 6, src: imgDrone, top: '68%', left: '86%', rotation: 12 },
+      { id: 7, src: imgCineTech, top: '85%', left: '4%', rotation: -5 },
+      { id: 8, src: imgTower, top: '88%', left: '84%', rotation: 6 }
+    ].map(card => ({
+      ...card,
+      // Massive negative delay spread so every card is at a completely different phase of its animation
+      delay: `${Math.random() * -80}s`, 
+      // Drastically increased duration (70s to 110s) for that ultra-smooth, slow-motion float
+      duration: `${70 + Math.random() * 40}s` 
+    }));
+  }, []);
+
   return (
-    // Changed base background to slightly darker beige variant if needed, but keeping #F9F0E1 ensures consistency
-    <div className="absolute inset-0 overflow-hidden bg-[#F9F0E1] z-0 pointer-events-none">
+    <div className="fixed inset-0 overflow-hidden z-0 pointer-events-none">
       
-      {/* 1. THE ARCHITECTURAL BLUEPRINT GRID */}
-      {/* Increased opacity from 0.04 to 0.08 to make the grid visibly darker and heavier */}
       <div 
         className="absolute inset-0 opacity-[0.08]" 
         style={{ 
@@ -17,72 +42,53 @@ const AmbioraBackground = () => {
         }} 
       />
 
-      {/* 2. LIVE CIRCUIT TRACES (SVG Data Flows) */}
-      {/* Increased base opacity from 0.20 to 0.40 so the traces are much more prominent */}
-      <svg className="absolute inset-0 w-full h-full opacity-40" xmlns="http://www.w3.org/2000/svg">
-        <style>{`
-          .trace-fast { 
-            stroke-dasharray: 1500; 
-            stroke-dashoffset: 1500; 
-            animation: drawTrace 6s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
-          }
-          .trace-slow { 
-            stroke-dasharray: 2000; 
-            stroke-dashoffset: 2000; 
-            animation: drawTrace 12s ease-in-out infinite reverse; 
-          }
-          @keyframes drawTrace { 
-            100% { stroke-dashoffset: 0; } 
-          }
-          .tech-node { 
-            animation: pulseNode 4s ease-in-out infinite; 
-            transform-origin: center;
-          }
-          @keyframes pulseNode { 
-            0%, 100% { transform: scale(1); opacity: 0.6; } /* Increased base opacity */
-            50% { transform: scale(1.8); opacity: 1; } 
-          }
-        `}</style>
+      <style>{`
+        @keyframes gentleFloat {
+          0%, 100% { transform: translateY(0) rotate(var(--rot)); }
+          /* Kept the 35px travel distance so the movement is visible, just much slower now */
+          50% { transform: translateY(-35px) rotate(calc(var(--rot) + 5deg)); }
+        }
+      `}</style>
+      
+      <div 
+        className="absolute inset-0 w-full h-full"
+        style={{
+          maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,1) 90%, rgba(0,0,0,1) 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,1) 90%, rgba(0,0,0,1) 100%)'
+        }}
+      >
+        {floatingCards.map((card) => (
+          <div 
+            key={card.id}
+            className="absolute transition-transform rounded-md overflow-hidden bg-transparent"
+            style={{
+              top: card.top,
+              left: card.left,
+              width: '140px', 
+              height: '200px',
+              '--rot': `${card.rotation}deg`,
+              animation: `gentleFloat ${card.duration} ease-in-out infinite`,
+              animationDelay: card.delay,
+              opacity: 0.30, 
+              mixBlendMode: 'multiply',
+              filter: 'drop-shadow(0 15px 20px rgba(0, 0, 0, 0.2))'
+            }}
+          >
+            <img 
+              src={card.src} 
+              alt="Ambiora Event Poster" 
+              loading="lazy" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
 
-        {/* Thickened the stroke widths slightly to add visual weight */}
-        <path d="M-100,150 L200,150 L250,200 L250,450 L400,600 L1200,600" fill="none" stroke="#2B2B29" strokeWidth="2.5" className="trace-fast" />
-        <path d="M1200,300 L800,300 L750,350 L750,600 L600,750 L-100,750" fill="none" stroke="#2B2B29" strokeWidth="2" className="trace-slow" />
-        <path d="M350,-100 L350,250 L450,350 L850,350 L900,400 L900,1200" fill="none" stroke="#2B2B29" strokeWidth="3" className="trace-fast" style={{animationDelay: '-2s', opacity: 0.8}} />
-        <path d="M150,1000 L150,800 L300,650 L500,650" fill="none" stroke="#2B2B29" strokeWidth="2" className="trace-slow" style={{animationDelay: '-4s'}} />
-
-        {/* Hardware Nodes */}
-        <circle cx="200" cy="150" r="4" fill="#2B2B29" className="tech-node" />
-        <circle cx="250" cy="200" r="4" fill="#2B2B29" className="tech-node" style={{animationDelay: '-1s'}} />
-        <circle cx="400" cy="600" r="4" fill="#2B2B29" className="tech-node" style={{animationDelay: '-2s'}} />
-        <circle cx="800" cy="300" r="4" fill="#2B2B29" className="tech-node" style={{animationDelay: '-3s'}} />
-        <circle cx="600" cy="750" r="4" fill="#2B2B29" className="tech-node" style={{animationDelay: '-0.5s'}} />
-        <circle cx="450" cy="350" r="4" fill="#2B2B29" className="tech-node" style={{animationDelay: '-1.5s'}} />
-        <circle cx="900" cy="400" r="4" fill="#2B2B29" className="tech-node" style={{animationDelay: '-2.5s'}} />
+      {/* Made the trace lines move slightly slower as well to match the new relaxed vibe */}
+      <svg className="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+        <path d="M-100,150 L200,150 L250,200 L250,450 L400,600 L1200,600" fill="none" stroke="#2B2B29" strokeWidth="2" strokeDasharray="1500" strokeDashoffset="1500" className="animate-[drawTrace_12s_cubic-bezier(0.4,0,0.2,1)_infinite]" />
+        <path d="M1200,300 L800,300 L750,350 L750,600 L600,750 L-100,750" fill="none" stroke="#2B2B29" strokeWidth="1.5" strokeDasharray="2000" strokeDashoffset="2000" className="animate-[drawTrace_20s_ease-in-out_infinite_reverse]" />
       </svg>
-
-      {/* 3. ROTATING STRUCTURAL HUD RINGS (Top Right) */}
-      {/* Increased opacity from 0.06 to 0.15 */}
-      <div className="absolute -top-48 -right-48 w-[600px] h-[600px] opacity-[0.15]">
-        <svg viewBox="0 0 200 200" className="w-full h-full animate-[spin_60s_linear_infinite]">
-          <circle cx="100" cy="100" r="90" fill="none" stroke="#2B2B29" strokeWidth="1" strokeDasharray="4 8" />
-          <circle cx="100" cy="100" r="75" fill="none" stroke="#2B2B29" strokeWidth="2" strokeDasharray="30 15 5 15" className="origin-center animate-[spin_30s_linear_infinite_reverse]" />
-          <circle cx="100" cy="100" r="60" fill="none" stroke="#2B2B29" strokeWidth="1" />
-          <path d="M100 5 L100 25 M100 175 L100 195 M5 100 L25 100 M175 100 L195 100" stroke="#2B2B29" strokeWidth="1.5" />
-        </svg>
-      </div>
-
-      {/* 4. ROTATING STRUCTURAL HUD RINGS (Bottom Left) */}
-      {/* Increased opacity from 0.08 to 0.18 */}
-      <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] opacity-[0.18]">
-        <svg viewBox="0 0 200 200" className="w-full h-full origin-center animate-[spin_40s_linear_infinite_reverse]">
-          <circle cx="100" cy="100" r="80" fill="none" stroke="#2B2B29" strokeWidth="1.5" strokeDasharray="10 20 50 20" />
-          <circle cx="100" cy="100" r="60" fill="none" stroke="#2B2B29" strokeWidth="1" strokeDasharray="2 4" className="origin-center animate-[spin_20s_linear_infinite]" />
-        </svg>
-      </div>
-
-      {/* Vignette effect */}
-      {/* Reduced opacity from 0.70 to 0.40 to allow more of the dark grid/traces to show through the center */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#F9F0E1_100%)] opacity-40"></div>
     </div>
   );
 };

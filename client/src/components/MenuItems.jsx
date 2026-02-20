@@ -1,3 +1,4 @@
+// src/components/MenuItems.jsx
 import React from "react";
 import Line from "./Line";
 
@@ -10,12 +11,11 @@ const MenuItems = ({ type, menu }) => {
         // Snacks Menu
         menu.map((category, index) => (
           <div key={index} className="mb-10 last:mb-8">
-            {/* Category Header */}
-            <div className="relative text-center mb-8">
-              <h2 className="text-4xl font-[Cormorant_Garamond] text-[#2B2B29] relative z-10 inline-block px-6">
+            {/* Clean Category Header - Removed the illogical background "ball" */}
+            <div className="text-center mb-8">
+              <h2 className="text-4xl font-['Cormorant_Garamond'] text-[#2B2B29] inline-block px-6">
                 {category.categoryName}
               </h2>
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-[#ECDFCB]/50 rounded-full -z-10"></div>
             </div>
 
             {/* Menu Items Grid */}
@@ -23,13 +23,12 @@ const MenuItems = ({ type, menu }) => {
               {category.items.map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between">
                   <div className="flex-1 flex items-center">
-                    <span className="text-2xl font-[Cormorant_Garamond] text-[#2B2B29]">
+                    <span className="text-2xl font-['Cormorant_Garamond'] text-[#2B2B29]">
                       {item.name}
                     </span>
-                    {/* <div className="flex-1 mx-4 border-b-2 border-dotted border-[#2B2B29]"></div> */}
                   </div>
-                  <span className="text-2xl font-[Cormorant_Garamond] text-[#2B2B29]">
-                    {item.price}
+                  <span className="text-2xl font-['Cormorant_Garamond'] text-[#2B2B29]">
+                    {item.price === 0 ? "" : `₹${item.price}`}
                   </span>
                 </div>
               ))}
@@ -37,7 +36,7 @@ const MenuItems = ({ type, menu }) => {
 
             {/* Line */}
             <div className="max-w-2xl mx-auto">
-              <Line className="mt-10 w-full" />
+              <Line className="mt-10 w-full opacity-60" />
             </div>
           </div>
         ))
@@ -48,14 +47,14 @@ const MenuItems = ({ type, menu }) => {
             {Array.isArray(menu) &&
               menu.map((item, index) => (
                 <div key={index}>
-                  <p className="text-2xl font-[Cormorant_Garamond] text-[#2B2B29] py-1 px-4">
+                  <p className="text-2xl font-['Cormorant_Garamond'] text-[#2B2B29] py-1 px-4">
                     {item}
                   </p>
                 </div>
               ))}
           </div>
 
-          <Line className="mt-10 w-full" />
+          <Line className="mt-10 w-full opacity-60" />
         </div>
       )}
     </div>

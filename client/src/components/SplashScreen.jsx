@@ -7,7 +7,7 @@ const SplashScreen = ({ onComplete }) => {
   useEffect(() => {
     let startTime;
     let animationFrameId;
-    const duration = 800; 
+    const duration = 700; 
     const animateProgress = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
@@ -17,7 +17,7 @@ const SplashScreen = ({ onComplete }) => {
       } else {
         // Trigger exit animations when exact time is reached
         setIsOpening(true);
-        setTimeout(onComplete, 800);
+        setTimeout(onComplete, 700);
       }
     };
 
