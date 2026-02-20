@@ -14,10 +14,7 @@ function App() {
 
   return (
     <>
-      {/* FIX: Removed global <SplashScreen /> component here. 
-          This ensures it DOES NOT appear on the Login page. 
-      */}
-
+      
       <div>
         <BrowserRouter>
           <Routes>
