@@ -2,59 +2,50 @@
 import React from "react";
 import Line from "./Line";
 
-const MenuItems = ({ type, menu }) => {
+const MenuItems = ({ type, menu, isFlavium }) => {
   if (!menu) return null;
 
+  const textColor = isFlavium ? "text-[#2B2B29]" : "text-[#F9F0E1]";
+
   return (
-    <div className="mt-10">
+    <div className="mt-8">
       {type === "snacks" ? (
-        // Snacks Menu
         menu.map((category, index) => (
-          <div key={index} className="mb-10 last:mb-8">
-            {/* Clean Category Header - Removed the illogical background "ball" */}
+          <div key={index} className="mb-12 last:mb-8">
             <div className="text-center mb-8">
-              <h2 className="text-4xl font-['Cormorant_Garamond'] text-[#2B2B29] inline-block px-6">
+              <h2 className={`text-3xl md:text-4xl font-['Cormorant_Garamond'] inline-block px-6 transition-colors duration-700 ${textColor}`}>
                 {category.categoryName}
               </h2>
             </div>
-
-            {/* Menu Items Grid */}
-            <div className="space-y-4 max-w-2xl mx-auto">
+            <div className="space-y-6 md:space-y-8 max-w-2xl mx-auto px-4">
               {category.items.map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between">
-                  <div className="flex-1 flex items-center">
-                    <span className="text-2xl font-['Cormorant_Garamond'] text-[#2B2B29]">
-                      {item.name}
-                    </span>
-                  </div>
-                  <span className="text-2xl font-['Cormorant_Garamond'] text-[#2B2B29]">
+                  <span className={`text-xl md:text-2xl font-['Cormorant_Garamond'] tracking-wide transition-colors duration-700 ${textColor}`}>
+                    {item.name}
+                  </span>
+                  <span className={`text-xl md:text-2xl font-['Cormorant_Garamond'] transition-colors duration-700 ${textColor}`}>
                     {item.price === 0 ? "" : `₹${item.price}`}
                   </span>
                 </div>
               ))}
             </div>
-
-            {/* Line */}
             <div className="max-w-2xl mx-auto">
-              <Line className="mt-10 w-full opacity-60" />
+              <Line className="mt-10 w-full" isFlavium={isFlavium} />
             </div>
           </div>
         ))
       ) : (
-        // Breakfast, Lunch, Dinner
-        <div className="max-w-2xl mx-auto">
-          <div className="space-y-6 text-center">
+        <div className="max-w-2xl mx-auto px-4">
+          <div className="space-y-8 md:space-y-10 text-center pb-6">
             {Array.isArray(menu) &&
               menu.map((item, index) => (
                 <div key={index}>
-                  <p className="text-2xl font-['Cormorant_Garamond'] text-[#2B2B29] py-1 px-4">
+                  <p className={`text-[1.35rem] md:text-[1.75rem] font-['Cormorant_Garamond'] tracking-wide transition-colors duration-700 ${textColor}`}>
                     {item}
                   </p>
                 </div>
               ))}
           </div>
-
-          <Line className="mt-10 w-full opacity-60" />
         </div>
       )}
     </div>

@@ -1,94 +1,75 @@
 // src/components/AmbioraBackground.jsx
-import React, { useMemo } from 'react';
-
-import imgCineTech from '../assets/cine_tech.png';
-import imgCodeVyuh from '../assets/code_vyuh.png';
-import imgDeepFake from '../assets/deep_fake_hisence.png'; 
-import imgDrone from '../assets/drone_o_mania.png';
-import imgPitchApp from '../assets/pitch_your_own_app.png'; 
-import imgRobo from '../assets/robo_workshop.png';
-import imgTower from '../assets/tower_of_stability.png';
-import imgTreasure from '../assets/treasure_hunt.png';
+import React from 'react';
 
 const AmbioraBackground = () => {
-  const floatingCards = useMemo(() => {
-    return [
-      { id: 1, src: imgCodeVyuh, top: '2%', left: '2%', rotation: -12 },
-      { id: 2, src: imgTreasure, top: '8%', left: '86%', rotation: 8 },
-      { id: 3, src: imgRobo, top: '32%', left: '1%', rotation: 15 },
-      { id: 4, src: imgDeepFake, top: '38%', left: '89%', rotation: -10 }, 
-      { id: 5, src: imgPitchApp, top: '62%', left: '3%', rotation: -8 },
-      { id: 6, src: imgDrone, top: '68%', left: '86%', rotation: 12 },
-      { id: 7, src: imgCineTech, top: '85%', left: '4%', rotation: -5 },
-      { id: 8, src: imgTower, top: '88%', left: '84%', rotation: 6 }
-    ].map(card => ({
-      ...card,
-      // Massive negative delay spread so every card is at a completely different phase of its animation
-      delay: `${Math.random() * -80}s`, 
-      // Drastically increased duration (70s to 110s) for that ultra-smooth, slow-motion float
-      duration: `${70 + Math.random() * 40}s` 
-    }));
-  }, []);
-
   return (
-    <div className="fixed inset-0 overflow-hidden z-0 pointer-events-none">
+    // Fills parent container perfectly
+    <div className="absolute top-0 left-0 w-full h-full flex justify-center overflow-hidden pointer-events-none">
       
-      <div 
-        className="absolute inset-0 opacity-[0.08]" 
-        style={{ 
-          backgroundImage: 'linear-gradient(#2B2B29 1px, transparent 1px), linear-gradient(90deg, #2B2B29 1px, transparent 1px)', 
-          backgroundSize: '48px 48px',
-          backgroundPosition: 'center center'
-        }} 
-      />
-
       <style>{`
-        @keyframes gentleFloat {
-          0%, 100% { transform: translateY(0) rotate(var(--rot)); }
-          /* Kept the 35px travel distance so the movement is visible, just much slower now */
-          50% { transform: translateY(-35px) rotate(calc(var(--rot) + 5deg)); }
+        /* Soothing, slow fiber optic flows */
+        @keyframes gentleSurge {
+          0% { stroke-dashoffset: 800; opacity: 0; }
+          20% { opacity: 0.8; }
+          80% { opacity: 0.8; }
+          100% { stroke-dashoffset: 0; opacity: 0; }
+        }
+        @keyframes slowPan {
+          0% { background-position: 0% 0%; }
+          100% { background-position: 0% 100%; }
+        }
+        .elegant-line {
+          stroke: #F9F0E1; /* Light beige lines to pop against dark bg */
+          fill: none;
+          stroke-linecap: round;
         }
       `}</style>
-      
-      <div 
-        className="absolute inset-0 w-full h-full"
-        style={{
-          maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,1) 90%, rgba(0,0,0,1) 100%)',
-          WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,1) 90%, rgba(0,0,0,1) 100%)'
-        }}
-      >
-        {floatingCards.map((card) => (
-          <div 
-            key={card.id}
-            className="absolute transition-transform rounded-md overflow-hidden bg-transparent"
-            style={{
-              top: card.top,
-              left: card.left,
-              width: '140px', 
-              height: '200px',
-              '--rot': `${card.rotation}deg`,
-              animation: `gentleFloat ${card.duration} ease-in-out infinite`,
-              animationDelay: card.delay,
-              opacity: 0.30, 
-              mixBlendMode: 'multiply',
-              filter: 'drop-shadow(0 15px 20px rgba(0, 0, 0, 0.2))'
-            }}
-          >
-            <img 
-              src={card.src} 
-              alt="Ambiora Event Poster" 
-              loading="lazy" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ))}
-      </div>
 
-      {/* Made the trace lines move slightly slower as well to match the new relaxed vibe */}
-      <svg className="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-        <path d="M-100,150 L200,150 L250,200 L250,450 L400,600 L1200,600" fill="none" stroke="#2B2B29" strokeWidth="2" strokeDasharray="1500" strokeDashoffset="1500" className="animate-[drawTrace_12s_cubic-bezier(0.4,0,0.2,1)_infinite]" />
-        <path d="M1200,300 L800,300 L750,350 L750,600 L600,750 L-100,750" fill="none" stroke="#2B2B29" strokeWidth="1.5" strokeDasharray="2000" strokeDashoffset="2000" className="animate-[drawTrace_20s_ease-in-out_infinite_reverse]" />
-      </svg>
+      {/* === THE DARK CONTAINER BACKGROUND === */}
+      {/* Removed max-w so it fills the menu card edge-to-edge */}
+      <div className="relative w-full h-full bg-[#1A1A19] overflow-hidden shadow-[inset_0_0_60px_rgba(0,0,0,0.8)]">
+        
+        {/* Layer 1: Slow Panning Blueprint Grid (Faint Beige) */}
+        <div 
+          className="absolute inset-0 opacity-[0.05]"
+          style={{ 
+            backgroundImage: 'linear-gradient(#F9F0E1 1px, transparent 1px), linear-gradient(90deg, #F9F0E1 1px, transparent 1px)', 
+            backgroundSize: '40px 40px',
+            animation: 'slowPan 60s linear infinite'
+          }} 
+        />
+
+        {/* Layer 2: Left Side Technical Lines */}
+        <svg className="absolute top-0 left-0 w-[150px] md:w-[200px] h-full opacity-60" viewBox="0 0 200 1000" preserveAspectRatio="xMinYMin slice" xmlns="http://www.w3.org/2000/svg">
+          {/* Static Track */}
+          <path className="elegant-line opacity-20" strokeWidth="1" d="M 0 150 L 60 150 L 100 190 L 100 600" />
+          <path className="elegant-line opacity-20" strokeWidth="1" d="M -20 400 L 30 400 L 60 430 L 60 800" />
+          
+          {/* Gentle Data Flow */}
+          <path className="elegant-line" strokeWidth="1.5" strokeDasharray="40 800" d="M 0 150 L 60 150 L 100 190 L 100 600" style={{ animation: 'gentleSurge 6s ease-in-out infinite' }} />
+          <path className="elegant-line" strokeWidth="1.5" strokeDasharray="30 800" d="M -20 400 L 30 400 L 60 430 L 60 800" style={{ animation: 'gentleSurge 5s ease-in-out infinite 2s' }} />
+
+          {/* Elegant Nodes */}
+          <circle cx="60" cy="150" r="2.5" fill="#F9F0E1" opacity="0.8" />
+          <rect x="98" y="598" width="4" height="4" fill="#F9F0E1" transform="rotate(45 100 600)" opacity="0.7" />
+        </svg>
+
+        {/* Layer 3: Right Side Technical Lines */}
+        <svg className="absolute top-0 right-0 w-[150px] md:w-[200px] h-full opacity-60" viewBox="0 0 200 1000" preserveAspectRatio="xMaxYMin slice" xmlns="http://www.w3.org/2000/svg">
+          {/* Static Track */}
+          <path className="elegant-line opacity-20" strokeWidth="1" d="M 200 250 L 140 250 L 100 290 L 100 700" />
+          <path className="elegant-line opacity-20" strokeWidth="1" d="M 220 500 L 170 500 L 140 530 L 140 900" />
+          
+          {/* Gentle Data Flow */}
+          <path className="elegant-line" strokeWidth="1.5" strokeDasharray="40 800" d="M 200 250 L 140 250 L 100 290 L 100 700" style={{ animation: 'gentleSurge 7s ease-in-out infinite 1s' }} />
+          <path className="elegant-line" strokeWidth="1.5" strokeDasharray="30 800" d="M 220 500 L 170 500 L 140 530 L 140 900" style={{ animation: 'gentleSurge 5.5s ease-in-out infinite 3s' }} />
+
+          {/* Elegant Nodes */}
+          <circle cx="140" cy="250" r="2.5" fill="#F9F0E1" opacity="0.8" />
+          <rect x="98" y="698" width="4" height="4" fill="#F9F0E1" transform="rotate(45 100 700)" opacity="0.7" />
+        </svg>
+
+      </div>
     </div>
   );
 };
