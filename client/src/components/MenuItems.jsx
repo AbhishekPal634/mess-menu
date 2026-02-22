@@ -1,10 +1,13 @@
 // src/components/MenuItems.jsx
-import React from "react";
+import React, { memo } from "react";
 import Line from "./Line";
 
-const MenuItems = ({ type, menu, isFlavium }) => {
+// Wrapping the component in 'memo' prevents unnecessary re-renders
+// making the scroll and theme transition much smoother.
+const MenuItems = memo(({ type, menu, isFlavium }) => {
   if (!menu) return null;
 
+  // The dynamic text color based on the active background theme
   const textColor = isFlavium ? "text-[#2B2B29]" : "text-[#F9F0E1]";
 
   return (
@@ -50,6 +53,9 @@ const MenuItems = ({ type, menu, isFlavium }) => {
       )}
     </div>
   );
-};
+});
+
+// Setting a display name is good practice when using memo
+MenuItems.displayName = "MenuItems";
 
 export default MenuItems;

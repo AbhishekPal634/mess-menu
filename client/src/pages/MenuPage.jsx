@@ -1,14 +1,19 @@
 // src/pages/MenuPage.jsx
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, Suspense } from "react";
 import { getAllMenus, getDefaultMenuType } from "../services/api";
 import SplashScreen from "../components/SplashScreen";
 import MenuItems from "../components/MenuItems";
 import Line from "../components/Line";
 import AmbioraBackground from "../components/AmbioraBackground"; 
-import FlaviumBackground from "../components/FlaviumBackground";
+
+// Lazy load the Flavium background
+const FlaviumBackground = React.lazy(() => import("../components/FlaviumBackground"));
 
 const MenuPage = () => {
+  // === TOP 1% FIX: Always Show Splash ===
+  // Reverted back to a simple 'true' so the animation plays on every reload.
   const [showSplash, setShowSplash] = useState(true);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [menuData, setMenuData] = useState(null);
@@ -20,24 +25,34 @@ const MenuPage = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        setLoading(true);
+        const cachedMenus = localStorage.getItem('ambiora_menus');
         const defaultType = getDefaultMenuType();
-        const menus = await getAllMenus();
-        setAllMenus(menus);
-        const initialMenu = menus.find((menu) => menu.type === defaultType) || menus[0];
-        if (initialMenu) setMenuData(initialMenu);
+
+        if (cachedMenus) {
+          const parsedMenus = JSON.parse(cachedMenus);
+          setAllMenus(parsedMenus);
+          const initial = parsedMenus.find((m) => m.type === defaultType) || parsedMenus[0];
+          setMenuData(initial);
+          setLoading(false); 
+        }
+
+        const freshMenus = await getAllMenus();
+        setAllMenus(freshMenus);
+        localStorage.setItem('ambiora_menus', JSON.stringify(freshMenus));
+        
+        if (!cachedMenus) {
+          const initialMenu = freshMenus.find((m) => m.type === defaultType) || freshMenus[0];
+          if (initialMenu) setMenuData(initialMenu);
+          setLoading(false);
+        }
       } catch (err) {
-        setError(err.message || "Failed to load menus.");
-      } finally {
+        if (!allMenus.length) setError(err.message || "Failed to load menus.");
         setLoading(false);
       }
     };
     fetchInitialData();
   }, []);
 
-  // === TOP 1% FIX: The Observer Dependency ===
-  // By adding menuData?.type here, we ensure the observer reconnects 
-  // after the user clicks "Lunch" or "Snacks".
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -47,13 +62,9 @@ const MenuPage = () => {
       { root: null, threshold: 0.3 }
     );
     
-    if (flaviumSectionRef.current) {
-      observer.observe(flaviumSectionRef.current);
-    }
+    if (flaviumSectionRef.current) observer.observe(flaviumSectionRef.current);
     
-    return () => {
-      observer.disconnect(); // disconnect is safer than unobserve to prevent memory leaks
-    };
+    return () => observer.disconnect();
   }, [loading, menuData?.type]);
 
   const handleNavigation = (type) => {
@@ -82,6 +93,7 @@ const MenuPage = () => {
 
   return (
     <>
+      {/* Simply passing setShowSplash(false) here now */}
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
 
       <div className="min-h-screen flex flex-col relative items-center justify-center p-4 md:p-8 overflow-hidden bg-[#ECDFCB]">
@@ -95,27 +107,22 @@ const MenuPage = () => {
           </div>
         ) : menuData ? (
           
-          // === TOP 1% FIX: Stable Outer Card ===
-          // Removed key={menuData.type} from this outer div. This prevents the background 
-          // from flashing and stops the scroll position from resetting!
-          <div className={`bg-transparent max-w-3xl w-full min-h-[calc(100vh-4rem)] shadow-2xl relative flex flex-col z-10 border transition-colors duration-700 ${themeBorder}/20 overflow-hidden rounded-lg`}>
+         <main className={`bg-transparent max-w-3xl w-full min-h-[calc(100vh-4rem)] shadow-2xl relative flex flex-col z-10 border transition-colors duration-700 ${themeBorder}/20 overflow-hidden rounded-lg`}>
             
-            {/* The Stable Background Layer */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isFlaviumTheme ? 'opacity-0' : 'opacity-100'}`}>
                     <AmbioraBackground />
                 </div>
-                <FlaviumBackground isVisible={isFlaviumTheme} />
+                <Suspense fallback={null}>
+                  <FlaviumBackground isVisible={isFlaviumTheme} />
+                </Suspense>
             </div>
 
-            {/* Corner Decorations */}
             <div className={`absolute top-0 left-0 w-12 h-12 md:w-16 md:h-16 border-l-[1.5px] border-t-[1.5px] transition-colors duration-700 ${themeBorder}/30 pointer-events-none z-20`}></div>
             <div className={`absolute top-0 right-0 w-12 h-12 md:w-16 md:h-16 border-r-[1.5px] border-t-[1.5px] transition-colors duration-700 ${themeBorder}/30 pointer-events-none z-20`}></div>
             <div className={`absolute bottom-0 left-0 w-12 h-12 md:w-16 md:h-16 border-l-[1.5px] border-b-[1.5px] transition-colors duration-700 ${themeBorder}/30 pointer-events-none z-20`}></div>
             <div className={`absolute bottom-0 right-0 w-12 h-12 md:w-16 md:h-16 border-r-[1.5px] border-b-[1.5px] transition-colors duration-700 ${themeBorder}/30 pointer-events-none z-20`}></div>
 
-            {/* === TOP 1% FIX: Animated Inner Content === */}
-            {/* key is moved HERE. Only the text re-renders and animates when navigating! */}
             <div key={menuData.type} className="flex-1 relative z-10 flex flex-col pt-6 md:pt-10 px-4 md:px-8 animate-[fadeSlideUp_0.6s_cubic-bezier(0.16,1,0.3,1)_forwards]">
               
               <header className="w-full flex flex-col items-center justify-center pt-2 pb-2">
@@ -188,7 +195,7 @@ const MenuPage = () => {
                 Designed by Chinmay Soni<br/>Developed by Abhishek Pal
               </p>
             </footer>
-          </div>
+          </main>
         ) : null}
       </div>
     </>

@@ -1,14 +1,14 @@
 // src/components/SplashScreen.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 
-import imgCineTech from '../assets/cine_tech.png';
-import imgCodeVyuh from '../assets/code_vyuh.png';
-import imgDeepFake from '../assets/deep_fake_hisence.png'; 
-import imgDrone from '../assets/drone_o_mania.png';
-import imgPitchApp from '../assets/pitch_your_own_app.png'; 
-import imgRobo from '../assets/robo_workshop.png';
-import imgTower from '../assets/tower_of_stability.png';
-import imgTreasure from '../assets/treasure_hunt.png';
+import imgCineTech from '../assets/cine_tech.avif';
+import imgCodeVyuh from '../assets/code_vyuh.avif';
+import imgDeepFake from '../assets/deep_fake_hisence.avif'; 
+import imgDrone from '../assets/drone_o_mania.avif';
+import imgPitchApp from '../assets/pitch_your_own_app.avif'; 
+import imgRobo from '../assets/robo_workshop.avif';
+import imgTower from '../assets/tower_of_stability.avif';
+import imgTreasure from '../assets/treasure_hunt.avif';
 
 const SplashScreen = ({ onComplete }) => {
   // Phases: 'hidden' -> 'deck' -> 'scatter' -> 'textReveal' -> 'fadeOut'
