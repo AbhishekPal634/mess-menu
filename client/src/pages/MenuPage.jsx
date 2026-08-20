@@ -184,7 +184,15 @@ const MenuPage = () => {
         {/* Credits */}
         <footer className="mt-auto pt-8 pb-2">
           <p className="text-sm font-[Cormorant_Garamond] text-[#2B2B29]/70 text-center">
-            Designed & Developed by Abhishek Pal
+            Designed & Developed by{" "}
+            <a
+              href="https://github.com/Chinmay048"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline cursor-pointer"
+            >
+              Chinmay Soni
+            </a>
           </p>
         </footer>
       </div>

@@ -19,6 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
+app.get("/", (req, res) => res.status(200).json({ message: "Mess Menu API is running!" }));
 app.use("/api/menu", menuRoutes);
 app.use("/api/auth", authRoutes);
 
